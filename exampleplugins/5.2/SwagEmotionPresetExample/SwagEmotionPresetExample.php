@@ -74,10 +74,5 @@ class SwagEmotionPresetExample extends Plugin
     /**
      * @return PresetMetaDataInterface[]
      */
-    private function getPresetInstances()
-    {
-        return [
-            new MyCustomPreset()
-        ];
-    }
+    
 }

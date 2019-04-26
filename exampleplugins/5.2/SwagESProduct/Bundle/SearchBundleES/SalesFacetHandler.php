@@ -66,25 +66,5 @@ class SalesFacetHandler implements HandlerInterface, ResultHydratorInterface
      * @param $data
      * @return array
      */
-    private function getActiveValues(Criteria $criteria, $data)
-    {
-        $actives = [
-            'min' => $data['min'],
-            'max' => $data['max']
-        ];
-
-        /** @var SalesCondition $condition */
-        if (!($condition = $criteria->getCondition('swag_es_product_sales'))) {
-            return $actives;
-        }
-
-        if ($condition->getMin()) {
-            $actives['min'] = $condition->getMin();
-        }
-
-        if ($condition->getMax()) {
-            $actives['max'] = $condition->getMax();
-        }
-        return $actives;
-    }
+    
 }

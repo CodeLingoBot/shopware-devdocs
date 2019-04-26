@@ -56,24 +56,5 @@ class FileTypeWhiteListDecorator implements FileTypeWhitelistInterface
      *
      * @return array
      */
-    private function getMimeTypeWhitelistForFiles()
-    {
-        $newMimeTypes = [
-            'video/x-ms-asf',           // .asf
-            'video/x-ms-asf',           // .asx
-            'video/x-ms-wvx',           // .wvx
-            'video/x-ms-wm',            // .wm
-            'video/x-ms-wmx',           // .wmx
-            'audio/x-ms-wma',           // .wma
-            'audio/x-ms-wax',           // .wax
-            'audio/x-ms-wmv',           // .wmv
-            'application/x-ms-wmz',     // .wmz
-            'application/x-ms-wmd',     // .wmd
-        ];
-        
-        return array_merge(
-            FileTypeWhitelist::$mimeTypeWhitelist['file'],
-            $newMimeTypes
-        );
-    }
+    
 }

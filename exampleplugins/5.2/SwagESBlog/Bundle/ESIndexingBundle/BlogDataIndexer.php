@@ -93,14 +93,5 @@ class BlogDataIndexer implements DataIndexerInterface
         ]);
     }
 
-    private function getBlogIds(Shop $shop)
-    {
-        $query = $this->connection->createQueryBuilder();
-        $query->select('blog.id')
-            ->from('s_blog', 'blog')
-            ->innerJoin('blog', 's_categories', 'category', 'category.id = blog.category_id AND category.path LIKE :path')
-            ->setParameter(':path', '%|'.(int)$shop->getCategory()->getId().'|%');
-
-        return $query->execute()->fetchAll(\PDO::FETCH_COLUMN);
-    }
+    
 }

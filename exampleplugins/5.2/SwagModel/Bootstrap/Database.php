@@ -46,10 +46,5 @@ class Database
     /**
      * @return array
      */
-    private function getClassesMetaData()
-    {
-        return [
-            $this->entityManager->getClassMetadata(MyPluginModel::class)
-        ];
-    }
+    
 }

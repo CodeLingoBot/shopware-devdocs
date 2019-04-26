@@ -63,16 +63,5 @@ class SeoCategoryService
      * @param $context
      * @return array
      */
-    private function getCategoryIds($ids, ShopContextInterface $context)
-    {
-        $query = $this->connection->createQueryBuilder();
-        $query->select(['seoCategories.article_id', 'seoCategories.category_id'])
-            ->from('s_articles_categories_seo', 'seoCategories')
-            ->andWhere('seoCategories.article_id IN (:productIds)')
-            ->andWhere('seoCategories.shop_id = :shopId')
-            ->setParameter(':shopId', $context->getShop()->getId())
-            ->setParameter(':productIds', $ids, Connection::PARAM_INT_ARRAY);
-
-        return $query->execute()->fetchAll(\PDO::FETCH_KEY_PAIR);
-    }
+    
 }

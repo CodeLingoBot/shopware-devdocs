@@ -84,39 +84,7 @@ class HistoryListener implements EventSubscriberInterface
      * @param array $sources
      * @param string $prefix
      */
-    private function addHistoryToSource(SourceInterface $source, array $sources, $prefix = '')
-    {
-        $data = $this->fetchGitHistory();
-        $history = [];
-
-        foreach ($data as $key => $item) {
-            foreach ($item['articles'] as $articleKey => $article) {
-                if ($prefix && strpos($article, $prefix) !== 0) {
-                    continue;
-                }
-
-                $resource = $this->findArticle($sources, $article);
-
-                if (!$resource) {
-                    continue;
-                }
-
-                $permalink = $this->permalinkFactory->create($resource);
-                $url = rtrim($permalink->relativeUrlPath(), '/') . '/';
-
-                $title = $resource->data()->get('title');
-
-                $history[$item['date']][$title] = $url;
-            }
-        }
-
-        foreach ($history as $date => $items) {
-            ksort($items);
-            $history[$date] = $items;
-        }
-
-        $source->data()->set('docHistory', $history);
-    }
+    
 
     /**
      * @param array $sources
@@ -124,67 +92,12 @@ class HistoryListener implements EventSubscriberInterface
      *
      * @return null|SourceInterface
      */
-    private function findArticle(array $sources, $article)
-    {
-        /** @var SourceInterface $source */
-        foreach ($sources as $source) {
-            if (preg_match('#' . $article . '$#i', $source->file()->getPathname())) {
-                return $source;
-            }
-        }
-
-        return null;
-    }
+    
 
     /**
      * @param int $numOfCommits
      *
      * @return array
      */
-    private function fetchGitHistory($numOfCommits = 50)
-    {
-        $process = new Process(sprintf("git log --oneline --merges -%d | cut -d' ' -f1", $numOfCommits), $this->projectDir);
-        $process->run();
-
-        $commits = array_filter(explode(PHP_EOL, $process->getOutput()));
-
-        if (empty($commits)) {
-            return [];
-        }
-
-        $history = [];
-        $latestHash = 'HEAD^';
-
-        foreach ($commits as $commit) {
-            $getFilesProcess = new Process(sprintf('git diff --name-only %s %s', $commit, $latestHash), $this->projectDir);
-            $getFilesProcess->run();
-
-            $changedFiles = array_filter(
-                explode(PHP_EOL, $getFilesProcess->getOutput()),
-                function ($file) {
-                    if (preg_match('#source/.*\.(md|html)#i', $file) && !in_array($file, self::$blacklist, true)) {
-                        return true;
-                    }
-                }
-            );
-
-            if (empty($changedFiles)) {
-                continue;
-            }
-
-            $commitDateProcess = new Process(sprintf('git show --pretty=%%ct %s', $commit), $this->projectDir);
-            $commitDateProcess->run();
-
-            $commitDate = (int) trim($commitDateProcess->getOutput());
-
-            $latestHash = $commit;
-
-            $history[] = [
-                'date' => date('Y-m-d', $commitDate),
-                'articles' => $changedFiles
-            ];
-        }
-
-        return $history;
-    }
+    
 }

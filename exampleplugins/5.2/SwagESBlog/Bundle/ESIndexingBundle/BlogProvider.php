@@ -43,12 +43,5 @@ class BlogProvider
         return $result;
     }
 
-    private function getQuery($ids)
-    {
-        return $this->connection->createQueryBuilder()
-            ->select(['blog.id', 'blog.title', 'blog.short_description', 'blog.description', 'blog.views', 'blog.meta_keywords', 'blog.meta_description', 'blog.meta_title'])
-            ->from('s_blog', 'blog')
-            ->where('blog.id IN (:ids)')
-            ->setParameter(':ids', $ids, Connection::PARAM_INT_ARRAY);
-    }
+    
 }

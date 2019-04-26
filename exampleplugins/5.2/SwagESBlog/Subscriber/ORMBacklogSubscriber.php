@@ -107,64 +107,25 @@ class ORMBacklogSubscriber implements EventSubscriber
         $this->registerShutdownListener();
     }
 
-    private function registerShutdownListener()
-    {
-        if ($this->eventRegistered) {
-            return;
-        }
+    
 
-        $this->eventRegistered = true;
-        $this->container->get('events')->addListener(
-            'Enlight_Controller_Front_DispatchLoopShutdown',
-            function () {
-                $this->processQueue();
-            }
-        );
-    }
-
-    private function processQueue()
-    {
-        if (empty($this->queue)) {
-            return;
-        }
-        $this->container->get('shopware_elastic_search.backlog_processor')->add($this->queue);
-        $this->queue = [];
-    }
+    
 
     /**
      * @param ModelEntity $entity
      * @return Backlog
      */
-    private function getDeleteBacklog($entity)
-    {
-        switch (true) {
-            case ($entity instanceof BlogModel):
-                return new Backlog(self::EVENT_BLOG_DELETED, ['id' => $entity->getId()]);
-        }
-    }
+    
 
     /**
      * @param ModelEntity $entity
      * @return Backlog
      */
-    private function getInsertBacklog($entity)
-    {
-        switch (true) {
-            case ($entity instanceof BlogModel):
-                return new Backlog(self::EVENT_BLOG_INSERTED, ['id' => $entity->getId()]);
-
-        }
-    }
+    
 
     /**
      * @param ModelEntity $entity
      * @return Backlog
      */
-    private function getUpdateBacklog($entity)
-    {
-        switch (true) {
-            case ($entity instanceof BlogModel):
-                return new Backlog(self::EVENT_BLOG_UPDATED, ['id' => $entity->getId()]);
-        }
-    }
+    
 }

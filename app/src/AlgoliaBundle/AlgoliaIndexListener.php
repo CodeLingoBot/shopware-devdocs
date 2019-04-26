@@ -63,21 +63,5 @@ class AlgoliaIndexListener implements EventSubscriberInterface
      * @param AbstractSource $source
      * @return array
      */
-    private function parseSource(AbstractSource $source)
-    {
-        $document = array(
-            'objectID' => sha1($source->sourceId()),
-            'title' => $source->data()->get('title'),
-            'body'  => strip_tags($source->content()),
-            'url'   => rtrim($source->permalink()->relativeUrlPath(), '/').'/',
-            'date' => $source->data()->get('calculated_date'),
-        );
-
-        $tags = (is_array($source->data()->get('tags'))) ? $source->data()->get('tags') : array();
-        if ($tags) {
-            $document['tags'] = $tags;
-        }
-
-        return $document;
-    }
+    
 }

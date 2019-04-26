@@ -77,13 +77,5 @@ class SwagPaymentExample extends Plugin
      * @param Payment[] $payments
      * @param $active bool
      */
-    private function setActiveFlag($payments, $active)
-    {
-        $em = $this->container->get('models');
-
-        foreach ($payments as $payment) {
-            $payment->setActive($active);
-        }
-        $em->flush();
-    }
+    
 }

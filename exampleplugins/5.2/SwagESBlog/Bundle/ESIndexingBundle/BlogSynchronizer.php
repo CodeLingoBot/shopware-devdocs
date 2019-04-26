@@ -53,16 +53,5 @@ class BlogSynchronizer implements SynchronizerInterface
         $this->indexer->index($shopIndex, $blogIds);
     }
 
-    private function filterShopBlog(Shop $shop, $ids)
-    {
-        $query = $this->connection->createQueryBuilder();
-        $query->select('blog.id')
-            ->from('s_blog', 'blog')
-            ->innerJoin('blog', 's_categories', 'category', 'category.id = blog.category_id AND category.path LIKE :path')
-            ->andWhere('blog.id IN (:ids)')
-            ->setParameter(':path', '%|' . (int)$shop->getCategory()->getId() . '|%')
-            ->setParameter(':ids', $ids, Connection::PARAM_INT_ARRAY);
-
-        return $query->execute()->fetchAll(\PDO::FETCH_COLUMN);
-    }
+    
 }

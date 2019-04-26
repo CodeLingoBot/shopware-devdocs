@@ -58,17 +58,5 @@ class SearchIndexListener implements EventSubscriberInterface
      * @param AbstractSource $source
      * @return array
      */
-    private function parseSource(AbstractSource $source)
-    {
-        $tags = (is_array($source->data()->get('tags'))) ? $source->data()->get('tags') : array();
-
-        $document = array(
-            'title' => $source->data()->get('title'),
-            'body'  => strip_tags($source->content()),
-            'tags'  => implode(', ', $tags),
-            'url'   => rtrim($source->permalink()->relativeUrlPath(), '/').'/',
-        );
-
-        return $document;
-    }
+    
 }

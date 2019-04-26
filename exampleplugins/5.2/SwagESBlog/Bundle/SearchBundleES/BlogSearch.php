@@ -60,60 +60,17 @@ class BlogSearch implements ProductSearchInterface
         return $result;
     }
 
-    private function searchBlog(Criteria $criteria, Struct\ProductContextInterface $context)
-    {
-        /**@var $condition SearchTermCondition*/
-        $condition = $criteria->getCondition('search');
-        $query = $this->createMultiMatchQuery($condition);
-
-        $search = new Search();
-        $search->addQuery($query);
-        $search->setFrom(0)->setSize(5);
-
-        $index = $this->indexFactory->createShopIndex($context->getShop());
-        $params = [
-            'index' => $index->getName(),
-            'type'  => 'blog',
-            'body'  => $search->toArray()
-        ];
-
-        $raw = $this->client->search($params);
-
-        return $this->createBlogStructs($raw);
-    }
+    
 
     /**
      * @param SearchTermCondition $condition
      * @return MultiMatchQuery
      */
-    private function createMultiMatchQuery(SearchTermCondition $condition)
-    {
-        return new MultiMatchQuery(
-            ['title', 'shortDescription', 'longDescription'],
-            $condition->getTerm(),
-            ['operator' => 'AND']
-        );
-    }
+    
 
     /**
      * @param $raw
      * @return array
      */
-    private function createBlogStructs($raw)
-    {
-        $result = [];
-        foreach ($raw['hits']['hits'] as $hit) {
-            $source = $hit['_source'];
-
-            $blog = new Blog($source['id'], $source['title']);
-            $blog->setShortDescription($source['shortDescription']);
-            $blog->setLongDescription($source['longDescription']);
-            $blog->setMetaTitle($source['metaTitle']);
-            $blog->setMetaKeywords($source['metaKeywords']);
-            $blog->setMetaDescription($source['metaDescription']);
-
-            $result[] = $blog;
-        }
-        return $result;
-    }
+    
 }

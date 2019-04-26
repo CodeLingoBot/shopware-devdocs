@@ -103,26 +103,7 @@ class Shopware_Controllers_Frontend_PaymentExample extends Shopware_Controllers_
     /**
      * Creates the url parameters
      */
-    private function getUrlParameters()
-    {
-        /** @var ExamplePaymentService $service */
-        $service = $this->container->get('swag_payment_example.example_payment_service');
-        $router = $this->Front()->Router();
-        $user = $this->getUser();
-        $billing = $user['billingaddress'];
-
-        $parameter = [
-            'amount' => $this->getAmount(),
-            'currency' => $this->getCurrencyShortName(),
-            'firstName' => $billing['firstname'],
-            'lastName' => $billing['lastname'],
-            'returnUrl' => $router->assemble(['action' => 'return', 'forceSecure' => true]),
-            'cancelUrl' => $router->assemble(['action' => 'cancel', 'forceSecure' => true]),
-            'token' => $service->createPaymentToken($this->getAmount(), $billing['customernumber'])
-        ];
-
-        return '?' . http_build_query($parameter);
-    }
+    
 
     /**
      * Returns the URL of the payment provider. This has to be replaced with the real payment provider URL
